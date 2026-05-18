@@ -7,6 +7,7 @@
   <title>PromptAprovado — Engenharia de Prompt para Concursos</title>
   <meta name="description"
     content="Mini curso de engenharia de prompt + prompts prontos para concurseiros. NotebookLM, estudo ativo com IA e ciclo de estudos otimizado.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -1020,16 +1021,13 @@
     <div class="nav-tabs">
       <button class="nav-tab active" onclick="showPage('home')">Módulos</button>
       <button class="nav-tab" onclick="showPage('prompts')">Prompts Prontos</button>
-      <button class="nav-tab" onclick="showPage('ciclo')">Ciclo de Estudos</button>
     </div>
     <span class="badge-pro">Código 6</span>
   </nav>
 
-  <!-- Mobile menu -->
   <div class="mobile-menu-bar" style="padding: 0.5rem 1rem; border-bottom: 1px solid var(--border);">
     <button class="nav-tab active" onclick="showPage('home')" id="mob-tab-home">Módulos</button>
     <button class="nav-tab" onclick="showPage('prompts')" id="mob-tab-prompts">Prompts Prontos</button>
-    <button class="nav-tab" onclick="showPage('ciclo')" id="mob-tab-ciclo">Ciclo de Estudos</button>
   </div>
 
   <!-- =================== PAGE: HOME =================== -->
@@ -1044,10 +1042,10 @@
       <div class="hero-stats">
         <div class="stat">
           <div class="stat-num">5</div>
-          <div class="stat-label">módulos</div>
+          <div class="stat-label">módulos objetivos</div>
         </div>
         <div class="stat">
-          <div class="stat-num">40+</div>
+          <div class="stat-num">20+</div>
           <div class="stat-label">prompts prontos</div>
         </div>
         <div class="stat">
@@ -1064,9 +1062,6 @@
 
     <div class="section" id="modulos">
       <div class="section-title">▸ Módulos do Curso</div>
-      <div class="progress-wrap">
-        <div class="progress-fill" id="global-bar"></div>
-      </div>
       <div class="modules-grid" id="modules-grid"></div>
 
       <div class="content-panel" id="content-panel" style="display:none; margin-top:1.5rem;">
@@ -1093,44 +1088,7 @@
     </div>
   </div>
 
-  <!-- =================== PAGE: CICLO =================== -->
-  <div class="page" id="page-ciclo">
-    <div class="section">
-      <div style="margin-top:0.5rem; margin-bottom:1.5rem;">
-        <div class="section-title-lg">🔄 Ciclo de Estudos Flexível com IA</div>
-        <p class="section-desc">O método que levou ao 6º lugar no TRT2. Cada fase tem prompts específicos — clique para
-          ver.</p>
-      </div>
 
-      <div class="ciclo-wrap" id="ciclo-steps"></div>
-
-      <div class="divider"></div>
-
-      <div class="section-title">▸ Checklist Semanal</div>
-      <p class="section-desc" style="margin-bottom:1rem;">Marque o que fez nesta semana. A barra de progresso lá em cima
-        atualiza em tempo real.</p>
-      <div class="checklist" id="checklist"></div>
-
-      <div class="divider"></div>
-
-      <div class="section-title">▸ Prompt da Semana — Atualização do Ciclo</div>
-      <div class="prompt-block">
-        <div class="prompt-label">↳ Cole esse prompt toda semana para ajustar seu ciclo</div>
-        <div class="prompt-box" id="ciclo-semanal">Esta semana estudei: <span class="var-tag">[O QUE ESTUDOU]</span>.
-          Cumpri <span class="var-tag">[X%]</span> do planejado.
-          Minhas maiores dificuldades foram: <span class="var-tag">[DIFICULDADES]</span>.
-          Acertei <span class="var-tag">[X%]</span> das questões que fiz.
-          A prova é em <span class="var-tag">[X SEMANAS]</span>.
-
-          Com base nisso, ajuste meu ciclo de estudos para a próxima semana:
-          1. Redistribua prioridades considerando peso no edital e minha lacuna atual
-          2. Sugira reforço nas matérias críticas
-          3. Indique qual técnica de estudo ativo usar em cada matéria
-          4. Programe as revisões espaçadas necessárias<button class="copy-btn"
-            onclick="copyById('ciclo-semanal', this)">copiar</button></div>
-      </div>
-    </div>
-  </div>
 
   <div class="cta-bar" id="cta-global">
     <h3>🎯 Aprovação não é sorte — é método.</h3>
@@ -1178,13 +1136,12 @@ Formate a resposta com: (1) definição clara, (2) 2 exemplos práticos, (3) 3 a
       },
       {
         title: '02 · NotebookLM para Concursos',
-        tag: 'mai/26',
         desc: 'Transforme seus PDFs de edital em um tutor inteligente personalizado.',
         pills: ['notebooks', 'audio overview', 'mindmaps', 'citações'],
         content: `
-<p class="lesson-text"><strong>NotebookLM</strong> (Google, atualizado em maio/2026) é a ferramenta mais poderosa para transformar seus materiais de edital em fontes de estudo interativas. Ela lê seus PDFs e responde com base <em>exclusivamente</em> neles.</p>
+<p class="lesson-text"><strong>NotebookLM</strong> (Google) é a ferramenta mais poderosa para transformar seus materiais de edital em fontes de estudo interativas. Ela lê seus PDFs e responde com base <em>exclusivamente</em> neles.</p>
 
-<div class="highlight-box">🆕 Novidades de mai/2026: geração de mindmaps automáticos a partir dos docs, versão mobile com áudio offline, respostas com citação exata da página do documento, e sincronização em tempo real com Google Drive.</div>
+<div class="highlight-box">Geração de mindmaps automáticos a partir dos docs, versão mobile com áudio offline, respostas com citação exata da página do documento, e sincronização em tempo real com Google Drive.</div>
 
 <p class="lesson-text"><strong>Como configurar seu Notebook Ideal:</strong></p>
 <ul class="steps-list">
@@ -1360,26 +1317,7 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
       { category: 'revisao', title: 'Revisão Pré-Prova — 48h antes', desc: 'Foco máximo no que mais cai — sem enroscar em detalhes.', text: 'Faltam 48h para minha prova de [CARGO/BANCA].\nMatérias do edital: [LISTA].\n\nCrie um roteiro de revisão de última hora:\n— Primeiras 24h: o que revisar (maior probabilidade de cair)\n— Últimas 12h: conceitos rápidos e pegadinhas\n— O que NÃO revisar para não confundir\n— Uma técnica de memorização de emergência para os pontos críticos' },
     ];
 
-    const cicloData = [
-      { icon: '🔍', color: 'rgba(233,69,96,0.15)', title: 'D — Diagnóstico', desc: 'Mapeie suas lacunas antes de estudar qualquer coisa. Analise o edital com IA, autoavalie seu nível por matéria e descubra onde focar energia primeiro.', prompt: 'Me ajude a fazer um diagnóstico de lacunas para o edital do cargo [CARGO] da banca [BANCA]. Quero identificar minhas prioridades de estudo.' },
-      { icon: '📅', color: 'rgba(245,166,35,0.15)', title: 'P — Planejamento', desc: 'Monte um cronograma realista com a IA. Ciclo semanal otimizado, revisões espaçadas e simulados programados por semana até a data da prova.', prompt: 'Me ajude a montar um plano de estudos semanal para concurso usando a técnica de revisão espaçada de Ebbinghaus.' },
-      { icon: '📚', color: 'rgba(0,210,160,0.15)', title: 'E — Execução Ativa', desc: 'Estude com técnicas ativas: Feynman reverso com IA, flashcards gerados on-demand por banca, NotebookLM para fontes primárias do edital.', prompt: 'Quero aplicar estudo ativo com IA em [MATÉRIA]. Me sugira a melhor técnica para esse tipo de conteúdo.' },
-      { icon: '📊', color: 'rgba(87,108,254,0.15)', title: 'A — Avaliação', desc: 'Simule sob pressão de tempo, analise cada erro com o prompt de revisão pós-erro e mapeie padrões de dificuldade para corrigir a rota.', prompt: 'Preciso fazer uma análise de desempenho nos meus simulados de [MATÉRIA]. Me ajude a identificar padrões de erro.' },
-      { icon: '🔁', color: 'rgba(233,69,96,0.1)', title: 'R — Revisão & Ajuste', desc: 'Toda semana: atualize o ciclo com IA, reforce fraquezas identificadas, comemore avanços mensuráveis e ajuste o plano para a semana seguinte.', prompt: 'Preciso ajustar meu ciclo de estudos com base no progresso desta semana. Me faça as perguntas certas para atualizar meu plano.' },
-    ];
 
-    const checklistItems = [
-      'Rodei o diagnóstico semanal de lacunas com IA',
-      'Usei NotebookLM em pelo menos uma matéria',
-      'Fiz estudo ativo (Feynman ou flashcards) todos os dias úteis',
-      'Completei ao menos 1 simulado ou banco de questões',
-      'Revisei os erros do simulado com o prompt pós-erro',
-      'Atualizei meu cronograma com base no progresso real',
-      'Ouvi o Audio Overview do NotebookLM (revisão passiva)',
-    ];
-
-    // =================== STATE ===================
-    let doneChecks = new Set();
     let currentFilter = 'all';
 
     // =================== RENDER ===================
@@ -1389,7 +1327,7 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
       grid.innerHTML = modules.map((m, i) => `
     <div class="module-card" id="mod-${i}" onclick="openModule(${i})">
       <div class="module-num">MOD 0${i + 1}</div>
-      <div class="module-title">${m.title.replace('02 · NotebookLM para Concursos', '02 · NotebookLM para Concursos <span class="tag-new">mai/26</span>')}</div>
+      <div class="module-title">${m.title.replace('02 · NotebookLM para Concursos', '02 · NotebookLM para Concursos')}</div>
       <div class="module-desc">${m.desc}</div>
       <div class="module-pills">${m.pills.map(p => `<span class="pill">${p}</span>`).join('')}</div>
     </div>
@@ -1440,47 +1378,14 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
       document.getElementById('acc-' + i).classList.toggle('open');
     }
 
-    function renderCiclo() {
-      document.getElementById('ciclo-steps').innerHTML = cicloData.map((s, i) => `
-    <div class="ciclo-step">
-      <div class="ciclo-icon" style="background:${s.color}">${s.icon}</div>
-      <div class="ciclo-content">
-        <h4>${s.title}</h4>
-        <p>${s.desc}</p>
-      </div>
-    </div>
-  `).join('');
 
-      renderChecklist();
-    }
-
-    function renderChecklist() {
-      document.getElementById('checklist').innerHTML = checklistItems.map((item, i) => `
-    <div class="check-item ${doneChecks.has(i) ? 'done' : ''}" onclick="toggleCheck(${i}, this)">
-      <div class="check-circle">${doneChecks.has(i) ? '✓' : ''}</div>
-      <span>${item}</span>
-    </div>
-  `).join('');
-    }
-
-    function toggleCheck(i, el) {
-      if (doneChecks.has(i)) { doneChecks.delete(i); } else { doneChecks.add(i); }
-      el.classList.toggle('done', doneChecks.has(i));
-      el.querySelector('.check-circle').textContent = doneChecks.has(i) ? '✓' : '';
-      updateProgress();
-    }
-
-    function updateProgress() {
-      const pct = Math.round((doneChecks.size / checklistItems.length) * 100);
-      document.getElementById('global-bar').style.width = pct + '%';
-    }
 
     // =================== NAV ===================
 
     function showPage(name) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + name).classList.add('active');
-      ['home', 'prompts', 'ciclo'].forEach(n => {
+      ['home', 'prompts'].forEach(n => {
         const tabs = document.querySelectorAll('.nav-tab');
         tabs.forEach(t => {
           if (t.getAttribute('onclick') && t.getAttribute('onclick').includes("'" + name + "'")) {
@@ -1492,7 +1397,6 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
       });
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (name === 'prompts') renderPrompts(currentFilter);
-      if (name === 'ciclo') renderCiclo();
     }
 
     // =================== COPY ===================
@@ -1703,6 +1607,147 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
       color: var(--accent);
       text-decoration: none;
     }
+
+    /* Modal de Ajuda */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 13, 26, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 440px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transform: translateY(20px);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .modal-overlay.visible .modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.75rem;
+    }
+
+    .modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .modal-icon {
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text2);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .modal-close:hover {
+      color: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .modal-body {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text2);
+      font-family: var(--font);
+    }
+
+    .modal-body strong.error-prefix {
+      color: var(--accent);
+      font-weight: 800;
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      letter-spacing: -0.5px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0.5rem;
+    }
+
+    .modal-btn-confirm {
+      padding: 0.75rem 1.75rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .modal-btn-confirm:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(233, 69, 96, 0.2);
+    }
+
+    .gate-help-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: underline;
+      transition: color 0.2s, transform 0.2s;
+      margin-top: 0.5rem;
+      display: inline-block;
+    }
+
+    .gate-help-btn:hover {
+      color: var(--accent2);
+      transform: translateY(-1px);
+    }
   </style>
 
   <div id="gate">
@@ -1728,8 +1773,27 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
       <div class="gate-error" id="gate-error">Senha incorreta. Tente novamente.</div>
 
       <div class="gate-hint">
-        Recebeu sua senha por email após a compra.<br>
-        Dúvidas? <a href="mailto:seu@email.com">seu@email.com</a>
+        A senha de acesso está na sua área de membros da Hotmart.<br>
+        <button class="gate-help-btn" onclick="openHelpModal(false)">Precisa de ajuda? ❓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Ajuda -->
+  <div id="help-modal" class="modal-overlay" onclick="if(event.target===this) closeHelpModal()">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="modal-icon">💡</span>
+          <span>Ajuda de Acesso</span>
+        </div>
+        <button class="modal-close" onclick="closeHelpModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-help-text">
+        <!-- Conteúdo dinâmico -->
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn-confirm" onclick="closeHelpModal()">Entendido</button>
       </div>
     </div>
   </div>
@@ -1766,6 +1830,7 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
         gate.style.transition = 'opacity 0.35s ease';
         setTimeout(() => gate.classList.add('hidden'), 350);
       } else {
+        openHelpModal(true);
         err.classList.add('visible');
         document.getElementById('gate-input').style.borderColor = 'rgba(233,69,96,0.6)';
         setTimeout(() => {
@@ -1778,6 +1843,23 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
     function gateToggleEye() {
       const inp = document.getElementById('gate-input');
       inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    function openHelpModal(isIncorrectPassword) {
+      const modal = document.getElementById('help-modal');
+      const body = document.getElementById('modal-help-text');
+      const baseText = "O acesso ao prompt aprovado é exclusivo de quem comprou o curso do Prompt Aprovado na Hotmart. Para encontrá-la, vá até sua área de membros, está na descrição da primeira aula.";
+
+      if (isIncorrectPassword) {
+        body.innerHTML = `<strong class="error-prefix">⚠️ Senha Incorreta</strong>` + baseText;
+      } else {
+        body.innerHTML = baseText;
+      }
+      modal.classList.add('visible');
+    }
+
+    function closeHelpModal() {
+      document.getElementById('help-modal').classList.remove('visible');
     }
   </script>
 </body>
