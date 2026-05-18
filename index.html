@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptAprovado — Engenharia de Prompt para Concursos</title>
+  <meta name="description"
+    content="Mini curso de engenharia de prompt + prompts prontos para concurseiros. NotebookLM, estudo ativo com IA e ciclo de estudos otimizado.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --brand: #0d0d1a;
+      --accent: #e94560;
+      --accent2: #f5a623;
+      --green: #00d2a0;
+      --blue: #576bfe;
+      --text: #f0f0f0;
+      --text2: #a0aec0;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface2: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.1);
+      --radius: 12px;
+      --font: 'Syne', sans-serif;
+      --mono: 'DM Mono', monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #0d0d1a;
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0d0d1a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(233, 69, 96, 0.4);
+      border-radius: 3px;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(13, 13, 26, 0.95);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo-icon {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 4px;
+    }
+
+    .nav-tab {
+      padding: 7px 18px;
+      border-radius: 7px;
+      border: none;
+      background: transparent;
+      color: var(--text2);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-tab.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .nav-tab:hover:not(.active) {
+      color: var(--text);
+      background: var(--surface2);
+    }
+
+    .badge-pro {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    /* ===== PAGES ===== */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 4rem 2rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(233, 69, 96, 0.12) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(233, 69, 96, 0.1);
+      border: 1px solid rgba(233, 69, 96, 0.3);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 16px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -2px;
+      margin-bottom: 1.2rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 15px;
+      color: var(--text2);
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+      font-family: var(--mono);
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -1.5px;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text2);
+      font-family: var(--mono);
+      margin-top: 4px;
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #c73652);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 28px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(233, 69, 96, 0.3);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-ghost:hover {
+      background: var(--surface2);
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ===== SECTION ===== */
+    .section {
+      padding: 2rem 2rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text2);
+      margin-bottom: 1.2rem;
+    }
+
+    .section-title-lg {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      font-size: 13.5px;
+      color: var(--text2);
+      font-family: var(--mono);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 2rem 0;
+    }
+
+    /* ===== PROGRESS ===== */
+    .progress-wrap {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      height: 5px;
+      overflow: hidden;
+      margin-bottom: 1.8rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    /* ===== MODULE GRID ===== */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .module-card:hover {
+      border-color: rgba(233, 69, 96, 0.4);
+      background: var(--surface2);
+      transform: translateY(-3px);
+    }
+
+    .module-card:hover::before,
+    .module-card.active-card::before {
+      opacity: 1;
+    }
+
+    .module-card.active-card {
+      border-color: rgba(233, 69, 96, 0.6);
+      background: rgba(233, 69, 96, 0.06);
+    }
+
+    .module-num {
+      font-size: 10px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-weight: 500;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    .module-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .module-desc {
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.55;
+      font-family: var(--mono);
+    }
+
+    .module-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text2);
+      border: 1px solid var(--border);
+      font-family: var(--mono);
+    }
+
+    .tag-new {
+      background: rgba(0, 210, 160, 0.15);
+      border: 1px solid rgba(0, 210, 160, 0.3);
+      color: var(--green);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+      font-family: var(--mono);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
+    /* ===== CONTENT PANEL ===== */
+    .content-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 1.5rem;
+    }
+
+    .panel-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      color: var(--text2);
+      cursor: pointer;
+      font-size: 20px;
+      line-height: 1;
+      padding: 2px 6px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+
+    .btn-close:hover {
+      background: var(--surface2);
+      color: var(--text);
+    }
+
+    .panel-body {
+      padding: 1.5rem;
+    }
+
+    /* ===== LESSON COMPONENTS ===== */
+    .lesson-text {
+      font-size: 13.5px;
+      line-height: 1.8;
+      color: var(--text2);
+      font-family: var(--mono);
+      margin-bottom: 1rem;
+    }
+
+    .lesson-text strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .highlight-box {
+      background: rgba(0, 210, 160, 0.06);
+      border-left: 3px solid var(--green);
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem;
+      margin: 1rem 0;
+      font-size: 13px;
+      color: var(--text2);
+      font-family: var(--mono);
+      line-height: 1.65;
+    }
+
+    .tip-box {
+      background: rgba(245, 166, 35, 0.07);
+      border-left: 3px solid var(--accent2);
+      border-radius: 0 8px 8px 0;
+      padding: 0.9rem 1.1rem;
+      margin: 1rem 0;
+      font-size: 13px;
+      color: var(--text2);
+      font-family: var(--mono);
+      line-height: 1.65;
+    }
+
+    .steps-list {
+      list-style: none;
+      counter-reset: steps;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin: 1rem 0;
+    }
+
+    .steps-list li {
+      counter-increment: steps;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text2);
+      font-family: var(--mono);
+      line-height: 1.65;
+    }
+
+    .steps-list li::before {
+      content: counter(steps);
+      min-width: 24px;
+      height: 24px;
+      background: rgba(233, 69, 96, 0.12);
+      border: 1px solid rgba(233, 69, 96, 0.3);
+      border-radius: 50%;
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin: 1rem 0;
+    }
+
+    .feature-card {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .feature-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .feature-name {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .feature-desc {
+      font-size: 11px;
+      color: var(--text2);
+      font-family: var(--mono);
+      line-height: 1.5;
+    }
+
+    /* ===== PROMPT BLOCKS ===== */
+    .prompt-block {
+      margin-bottom: 1.5rem;
+    }
+
+    .prompt-label {
+      font-size: 11px;
+      color: var(--accent2);
+      font-family: var(--mono);
+      font-weight: 500;
+      margin-bottom: 6px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .prompt-box {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.1rem 1.1rem 2.8rem;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.75;
+      color: var(--text);
+      position: relative;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .var-tag {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .copy-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .copy-btn.copied {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+
+    /* ===== PROMPTS PAGE ===== */
+    .prompts-filter {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 1.4rem;
+    }
+
+    .filter-btn {
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .accordion {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 8px;
+      transition: border-color 0.2s;
+    }
+
+    .accordion:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .accordion.open {
+      border-color: rgba(233, 69, 96, 0.35);
+    }
+
+    .accordion-header {
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      transition: background 0.2s;
+      user-select: none;
+    }
+
+    .accordion-header:hover {
+      background: var(--surface2);
+    }
+
+    .accordion.open .accordion-header {
+      background: rgba(233, 69, 96, 0.05);
+    }
+
+    .accordion-title {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.3;
+    }
+
+    .acc-cat {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 10px;
+      background: rgba(233, 69, 96, 0.1);
+      border: 1px solid rgba(233, 69, 96, 0.2);
+      padding: 2px 7px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .acc-arrow {
+      color: var(--text2);
+      font-size: 11px;
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+
+    .accordion.open .acc-arrow {
+      transform: rotate(90deg);
+    }
+
+    .accordion-body {
+      display: none;
+      padding: 1.1rem 1.25rem;
+      border-top: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    .accordion.open .accordion-body {
+      display: block;
+    }
+
+    .acc-desc {
+      font-size: 12px;
+      color: var(--text2);
+      font-family: var(--mono);
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    /* ===== CICLO PAGE ===== */
+    .ciclo-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 1rem 0;
+    }
+
+    .ciclo-step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 1rem 1.1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: all 0.2s;
+    }
+
+    .ciclo-step:hover {
+      background: var(--surface2);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .ciclo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .ciclo-content h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .ciclo-content p {
+      font-size: 12px;
+      color: var(--text2);
+      font-family: var(--mono);
+      line-height: 1.6;
+    }
+
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 1rem 0;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text2);
+      font-family: var(--mono);
+      user-select: none;
+    }
+
+    .check-item:hover {
+      background: var(--surface2);
+    }
+
+    .check-item.done {
+      border-color: rgba(0, 210, 160, 0.3);
+      background: rgba(0, 210, 160, 0.04);
+      color: var(--text);
+    }
+
+    .check-item.done .check-circle {
+      background: var(--green);
+      border-color: var(--green);
+      color: #0d0d1a;
+    }
+
+    .check-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* ===== CTA BAR ===== */
+    .cta-bar {
+      background: linear-gradient(135deg, rgba(233, 69, 96, 0.12), rgba(245, 166, 35, 0.08));
+      border: 1px solid rgba(233, 69, 96, 0.2);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      margin: 0 2rem 2rem;
+    }
+
+    .cta-bar h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .cta-bar p {
+      font-size: 13px;
+      color: var(--text2);
+      font-family: var(--mono);
+      margin-bottom: 1.2rem;
+      line-height: 1.6;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: var(--text2);
+      font-family: var(--mono);
+    }
+
+    .footer-text a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 680px) {
+      nav {
+        padding: 0.75rem 1rem;
+        gap: 10px;
+      }
+
+      .nav-tabs {
+        display: none;
+      }
+
+      .mobile-menu-bar {
+        display: flex !important;
+      }
+
+      .hero {
+        padding: 2.5rem 1rem 2rem;
+      }
+
+      .hero h1 {
+        font-size: 1.8rem;
+        letter-spacing: -1px;
+      }
+
+      .hero-stats {
+        gap: 1.5rem;
+      }
+
+      .section {
+        padding: 1.5rem 1rem;
+      }
+
+      .cta-bar {
+        margin: 0 1rem 1.5rem;
+        padding: 1.5rem 1rem;
+      }
+
+      footer {
+        padding: 1.25rem 1rem;
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    .mobile-menu-bar {
+      display: none;
+      gap: 4px;
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 4px;
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    @media (max-width: 680px) {
+      .mobile-menu-bar {
+        display: flex;
+      }
+
+      nav {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="#" class="logo" onclick="showPage('home'); return false;">
+      <div class="logo-icon">⚡</div>
+      Prompt<span>Aprovado</span>
+    </a>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('home')">Módulos</button>
+      <button class="nav-tab" onclick="showPage('prompts')">Prompts Prontos</button>
+      <button class="nav-tab" onclick="showPage('ciclo')">Ciclo de Estudos</button>
+    </div>
+    <span class="badge-pro">Código 6</span>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu-bar" style="padding: 0.5rem 1rem; border-bottom: 1px solid var(--border);">
+    <button class="nav-tab active" onclick="showPage('home')" id="mob-tab-home">Módulos</button>
+    <button class="nav-tab" onclick="showPage('prompts')" id="mob-tab-prompts">Prompts Prontos</button>
+    <button class="nav-tab" onclick="showPage('ciclo')" id="mob-tab-ciclo">Ciclo de Estudos</button>
+  </div>
+
+  <!-- =================== PAGE: HOME =================== -->
+  <div class="page active" id="page-home">
+
+    <div class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-badge">✦ Mini Curso · Engenharia de Prompt para Concursos</div>
+      <h1>Estude pra concurso com<br><em>IA de verdade</em></h1>
+      <p class="hero-sub">Prompts prontos, NotebookLM e estudo ativo para concurseiros que querem resultado — sem
+        enrolação, sem guru.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">5</div>
+          <div class="stat-label">módulos</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">40+</div>
+          <div class="stat-label">prompts prontos</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">0</div>
+          <div class="stat-label">enrolação</div>
+        </div>
+      </div>
+      <div class="hero-cta">
+        <button class="btn-primary"
+          onclick="document.getElementById('modulos').scrollIntoView({behavior:'smooth'})">Começar agora →</button>
+        <button class="btn-ghost" onclick="showPage('prompts')">Ver prompts prontos</button>
+      </div>
+    </div>
+
+    <div class="section" id="modulos">
+      <div class="section-title">▸ Módulos do Curso</div>
+      <div class="progress-wrap">
+        <div class="progress-fill" id="global-bar"></div>
+      </div>
+      <div class="modules-grid" id="modules-grid"></div>
+
+      <div class="content-panel" id="content-panel" style="display:none; margin-top:1.5rem;">
+        <div class="panel-header">
+          <div class="panel-title" id="panel-title"></div>
+          <button class="btn-close" onclick="closeModule()" title="Fechar">✕</button>
+        </div>
+        <div class="panel-body" id="panel-body"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =================== PAGE: PROMPTS =================== -->
+  <div class="page" id="page-prompts">
+    <div class="section">
+      <div style="margin-top:0.5rem; margin-bottom:1.5rem;">
+        <div class="section-title-lg">📋 Biblioteca de Prompts</div>
+        <p class="section-desc">Copie, adapte e use. Substitua as variáveis em <span
+            style="color:var(--accent);font-family:var(--mono)">[COLCHETES]</span> com seus dados.</p>
+      </div>
+      <div class="prompts-filter" id="filter-btns"></div>
+      <div id="prompts-list"></div>
+    </div>
+  </div>
+
+  <!-- =================== PAGE: CICLO =================== -->
+  <div class="page" id="page-ciclo">
+    <div class="section">
+      <div style="margin-top:0.5rem; margin-bottom:1.5rem;">
+        <div class="section-title-lg">🔄 Ciclo de Estudos Flexível com IA</div>
+        <p class="section-desc">O método que levou ao 6º lugar no TRT2. Cada fase tem prompts específicos — clique para
+          ver.</p>
+      </div>
+
+      <div class="ciclo-wrap" id="ciclo-steps"></div>
+
+      <div class="divider"></div>
+
+      <div class="section-title">▸ Checklist Semanal</div>
+      <p class="section-desc" style="margin-bottom:1rem;">Marque o que fez nesta semana. A barra de progresso lá em cima
+        atualiza em tempo real.</p>
+      <div class="checklist" id="checklist"></div>
+
+      <div class="divider"></div>
+
+      <div class="section-title">▸ Prompt da Semana — Atualização do Ciclo</div>
+      <div class="prompt-block">
+        <div class="prompt-label">↳ Cole esse prompt toda semana para ajustar seu ciclo</div>
+        <div class="prompt-box" id="ciclo-semanal">Esta semana estudei: <span class="var-tag">[O QUE ESTUDOU]</span>.
+          Cumpri <span class="var-tag">[X%]</span> do planejado.
+          Minhas maiores dificuldades foram: <span class="var-tag">[DIFICULDADES]</span>.
+          Acertei <span class="var-tag">[X%]</span> das questões que fiz.
+          A prova é em <span class="var-tag">[X SEMANAS]</span>.
+
+          Com base nisso, ajuste meu ciclo de estudos para a próxima semana:
+          1. Redistribua prioridades considerando peso no edital e minha lacuna atual
+          2. Sugira reforço nas matérias críticas
+          3. Indique qual técnica de estudo ativo usar em cada matéria
+          4. Programe as revisões espaçadas necessárias<button class="copy-btn"
+            onclick="copyById('ciclo-semanal', this)">copiar</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-bar" id="cta-global">
+    <h3>🎯 Aprovação não é sorte — é método.</h3>
+    <p>Use os prompts prontos, siga o ciclo e deixe a IA trabalhar por você.<br>Desenvolvido por quem passou em 6º lugar
+      no TRT2.</p>
+    <a href="#modulos" class="btn-primary" onclick="showPage('home'); return false;">Começar pelo Módulo 1 →</a>
+  </div>
+
+  <footer>
+    <span class="footer-text">⚡ <strong>PromptAprovado</strong> · <a href="#">Código 6</a></span>
+    <span class="footer-text">Feito para concurseiros sérios · maio/2026</span>
+  </footer>
+
+  <script>
+    // =================== DATA ===================
+
+    const modules = [
+      {
+        title: '01 · Fundamentos de Engenharia de Prompt',
+        desc: 'O que é, por que funciona e como estruturar qualquer prompt.',
+        pills: ['persona', 'contexto', 'instrução', 'output'],
+        content: `
+<p class="lesson-text"><strong>Engenharia de Prompt</strong> é a habilidade de estruturar conversas com IA para obter resultados previsíveis e úteis. Para concurseiro, isso é uma vantagem real e imediata.</p>
+
+<div class="highlight-box">💡 Um bom prompt tem 4 componentes: <strong>Persona + Contexto + Instrução + Especificação de output (PCIE)</strong>. Dominar isso multiplica o aproveitamento de qualquer IA gratuita.</div>
+
+<p class="lesson-text"><strong>A estrutura PCIE na prática:</strong></p>
+<ul class="steps-list">
+  <li><strong>Persona:</strong> Diga à IA qual papel assumir. "Aja como professor de Direito Constitucional para concursos."</li>
+  <li><strong>Contexto:</strong> Dê o cenário. Qual banca, qual cargo, qual fase do estudo.</li>
+  <li><strong>Instrução:</strong> O que exatamente você quer? Verbos de ação claros e específicos.</li>
+  <li><strong>Output:</strong> Defina o formato. Tabela, lista, flashcards, narrativa, exemplos numerados.</li>
+</ul>
+
+<div class="tip-box">⚡ Dica do método: comece sempre com o prompt mais simples possível. Adicione complexidade só se o resultado não atender. Menos é mais na maioria dos casos.</div>
+
+<div class="prompt-block">
+  <div class="prompt-label">↳ Prompt Modelo — Estrutura PCIE</div>
+  <div class="prompt-box" id="ex-pcie">Aja como um professor especialista em <span class="var-tag">[MATÉRIA]</span> para concursos da banca <span class="var-tag">[BANCA]</span>.
+Estou na fase de estudo inicial do tópico <span class="var-tag">[TÓPICO]</span>.
+Explique os conceitos fundamentais em linguagem simples, com exemplos práticos e destaque o que mais cai nessa banca.
+Formate a resposta com: (1) definição clara, (2) 2 exemplos práticos, (3) 3 alertas de prova.<button class="copy-btn" onclick="copyById('ex-pcie', this)">copiar</button></div>
+</div>
+    `
+      },
+      {
+        title: '02 · NotebookLM para Concursos',
+        tag: 'mai/26',
+        desc: 'Transforme seus PDFs de edital em um tutor inteligente personalizado.',
+        pills: ['notebooks', 'audio overview', 'mindmaps', 'citações'],
+        content: `
+<p class="lesson-text"><strong>NotebookLM</strong> (Google, atualizado em maio/2026) é a ferramenta mais poderosa para transformar seus materiais de edital em fontes de estudo interativas. Ela lê seus PDFs e responde com base <em>exclusivamente</em> neles.</p>
+
+<div class="highlight-box">🆕 Novidades de mai/2026: geração de mindmaps automáticos a partir dos docs, versão mobile com áudio offline, respostas com citação exata da página do documento, e sincronização em tempo real com Google Drive.</div>
+
+<p class="lesson-text"><strong>Como configurar seu Notebook Ideal:</strong></p>
+<ul class="steps-list">
+  <li>Crie um Notebook por matéria — ex: Direito Constitucional, Informática, Raciocínio Lógico.</li>
+  <li>Suba: o edital, a lei seca relevante, um apostilão da banca e questões comentadas em PDF.</li>
+  <li>Use o <strong>Audio Overview</strong> para ouvir um resumo narrado — ideal para revisão no trânsito.</li>
+  <li>Gere o <strong>mindmap automático</strong> para visualizar a estrutura da matéria inteira.</li>
+  <li>Interaja no chat usando as perguntas de estudo ativo abaixo.</li>
+</ul>
+
+<div class="feature-grid">
+  <div class="feature-card"><span class="feature-icon">🎧</span><div class="feature-name">Audio Overview</div><div class="feature-desc">Resumo narrado dos seus docs. Ouça no transporte ou na academia.</div></div>
+  <div class="feature-card"><span class="feature-icon">🗺️</span><div class="feature-name">Mindmap Auto</div><div class="feature-desc">Mapa mental visual gerado automaticamente a partir dos PDFs.</div></div>
+  <div class="feature-card"><span class="feature-icon">📌</span><div class="feature-name">Citações Exatas</div><div class="feature-desc">Cada resposta aponta a página exata do documento fonte.</div></div>
+  <div class="feature-card"><span class="feature-icon">💬</span><div class="feature-name">Chat Contextual</div><div class="feature-desc">Pergunte qualquer coisa — a IA responde só com base nos seus materiais.</div></div>
+</div>
+
+<div class="prompt-block">
+  <div class="prompt-label">↳ Prompt para o Chat do NotebookLM — Extração de Pontos-Chave</div>
+  <div class="prompt-box" id="nblm-1">Com base exclusivamente nos documentos deste notebook, me dê um resumo dos 10 pontos mais importantes do tópico <span class="var-tag">[TÓPICO]</span> que mais aparecem em questões de prova, com a indicação de qual documento e trecho fundamenta cada ponto.<button class="copy-btn" onclick="copyById('nblm-1', this)">copiar</button></div>
+</div>
+
+<div class="prompt-block">
+  <div class="prompt-label">↳ Prompt para NotebookLM — Geração de Questões</div>
+  <div class="prompt-box" id="nblm-2">Com base nos documentos, elabore 5 questões no estilo <span class="var-tag">[BANCA]</span> sobre <span class="var-tag">[TÓPICO]</span>. Para cada questão, indique qual trecho do material fundamenta a resposta correta.<button class="copy-btn" onclick="copyById('nblm-2', this)">copiar</button></div>
+</div>
+    `
+      },
+      {
+        title: '03 · Estudo Ativo com IA',
+        desc: 'Feynman reverso, flashcards por banca e simulados com feedback instantâneo.',
+        pills: ['feynman', 'flashcard', 'simulado adaptativo'],
+        content: `
+<p class="lesson-text">Leitura passiva não aprova ninguém. <strong>Estudo ativo</strong> significa interagir com o conteúdo — e a IA é o parceiro de estudo mais paciente e disponível que você vai ter.</p>
+
+<div class="tip-box">⚡ As 3 técnicas mais eficazes com IA: <strong>Feynman reverso com chatbot, flashcards gerados on-demand por banca, e simulado adaptativo com análise de erro em tempo real.</strong></div>
+
+<p class="lesson-text"><strong>Como funciona o Feynman reverso:</strong> Você explica o conceito com suas próprias palavras. A IA identifica o que você errou, deixou vago ou esqueceu. É brutal — e funciona melhor do que reler a matéria 3 vezes.</p>
+
+<div class="prompt-block">
+  <div class="prompt-label">↳ Prompt — Feynman Reverso</div>
+  <div class="prompt-box" id="feynman">Vou te explicar o conceito de <span class="var-tag">[CONCEITO]</span> com minhas próprias palavras. Enquanto eu explico, identifique:
+(1) pontos corretos e bem fundamentados
+(2) imprecisões ou erros conceituais
+(3) lacunas importantes que eu não mencionei
+
+Ao final, corrija, complete e me dê 2 perguntas para testar se realmente entendi.
+Aqui vai minha explicação: <span class="var-tag">[SUA EXPLICAÇÃO AQUI]</span><button class="copy-btn" onclick="copyById('feynman', this)">copiar</button></div>
+</div>
+
+<div class="prompt-block">
+  <div class="prompt-label">↳ Prompt — Flashcards Cebraspe (Certo/Errado)</div>
+  <div class="prompt-box" id="flash">Crie 10 flashcards sobre <span class="var-tag">[TÓPICO]</span> no estilo Cebraspe (afirmações para julgar Certo/Errado).
+Frente: afirmação com possível pegadinha.
+Verso: gabarito (C ou E) + explicação em 2 linhas + base legal se aplicável.
+Misture afirmações corretas e incorretas de forma aleatória.
+Foque nas pegadinhas que a Cebraspe mais usa nesse assunto.<button class="copy-btn" onclick="copyById('flash', this)">copiar</button></div>
+</div>
+
+<div class="prompt-block">
+  <div class="prompt-label">↳ Prompt — Simulado Adaptativo</div>
+  <div class="prompt-box" id="simul">Vamos fazer um simulado adaptativo sobre <span class="var-tag">[MATÉRIA]</span>.
+Regras: comece com uma questão de dificuldade média. Se eu acertar, aumente a dificuldade. Se eu errar, diminua e explique o conceito antes de continuar.
+Faça 10 rodadas e, ao final, me dê um relatório com: % de acerto, pontos fortes, pontos fracos e próximos tópicos a revisar.<button class="copy-btn" onclick="copyById('simul', this)">copiar</button></div>
+</div>
+    `
+      },
+      {
+        title: '04 · IA para Organização do Estudo',
+        desc: 'Diagnóstico de lacunas, cronograma inteligente e ciclo de estudos automático.',
+        pills: ['diagnóstico', 'cronograma', 'ciclo flexível'],
+        content: `
+<p class="lesson-text">Organização é a diferença entre quem estuda muito e quem estuda certo. A IA pode ser seu planejador, coach e analista de desempenho ao mesmo tempo — de graça.</p>
+
+<div class="highlight-box">📋 Use IA para: diagnóstico de lacunas por edital, cronograma por semanas até a prova, priorização por peso × sua lacuna, e revisão espaçada automática.</div>
+
+<p class="lesson-text"><strong>Fluxo de Diagnóstico Inicial (faça isso primeiro):</strong></p>
+<ul class="steps-list">
+  <li>Cole o edital na IA e peça para extrair matérias com peso estimado por banca.</li>
+  <li>Faça um auto-diagnóstico: de 0 a 10, qual seu nível em cada matéria?</li>
+  <li>Peça um cronograma priorizando pelo binômio peso × lacuna.</li>
+  <li>Revise semanalmente com o prompt de atualização do ciclo (página Ciclo).</li>
+</ul>
+
+<div class="prompt-block">
+  <div class="prompt-label">↳ Prompt — Diagnóstico + Cronograma Completo</div>
+  <div class="prompt-box" id="crono">Sou candidato ao cargo de <span class="var-tag">[CARGO]</span> pela banca <span class="var-tag">[BANCA]</span>.
+A prova é em <span class="var-tag">[DATA]</span>.
+Tenho <span class="var-tag">[X horas/semana]</span> disponíveis para estudar.
+
+Matérias e meu nível atual (0-10):
+<span class="var-tag">[MATÉRIA 1]</span>: <span class="var-tag">[NÍVEL]</span>
+<span class="var-tag">[MATÉRIA 2]</span>: <span class="var-tag">[NÍVEL]</span>
+(continue listando)
+
+Monte um ciclo de estudos semanal otimizado:
+1. Priorize pelo binômio peso-no-edital × lacuna-minha
+2. Inclua revisões espaçadas (Ebbinghaus)
+3. Reserve dias para simulado e revisão de erros
+4. Sugira a técnica de estudo ativo mais indicada por matéria<button class="copy-btn" onclick="copyById('crono', this)">copiar</button></div>
+</div>
+
+<div class="prompt-block">
+  <div class="prompt-label">↳ Prompt — Análise do Edital por Banca</div>
+  <div class="prompt-box" id="edital">Analise o edital abaixo e:
+1. Extraia todas as matérias e seus subtópicos
+2. Estime o peso histórico de cada área com base no padrão da banca <span class="var-tag">[BANCA]</span>
+3. Sinalize quais tópicos têm maior probabilidade de cair com base em concursos anteriores
+4. Ordene por prioridade (peso × frequência histórica)
+
+Edital: <span class="var-tag">[COLE O EDITAL AQUI]</span><button class="copy-btn" onclick="copyById('edital', this)">copiar</button></div>
+</div>
+    `
+      },
+      {
+        title: '05 · Prompts Avançados & Fluxos',
+        desc: 'Encadeie prompts, modo socrático e análise profunda de erros.',
+        pills: ['chain prompts', 'socrático', 'pós-erro', 'workflow'],
+        content: `
+<p class="lesson-text">O próximo nível é <strong>encadear prompts</strong>: usar o output de um como input do próximo, criando um fluxo de estudo semi-automatizado que vai do resumo até a análise de desempenho.</p>
+
+<div class="highlight-box">🔗 Fluxo completo: Resumo → Flashcards → Questões → Análise de erro → Revisão focada. Tudo conectado com prompts sequenciais.</div>
+
+<p class="lesson-text"><strong>Técnicas avançadas:</strong></p>
+<ul class="steps-list">
+  <li>Use <strong>"Continue com base na resposta anterior"</strong> para encadear sem perder contexto.</li>
+  <li>Peça à IA para assumir a postura de <strong>banca examinadora</strong> e elaborar questões do seu material.</li>
+  <li>Use <strong>modo socrático</strong>: IA só faz perguntas, você chega às respostas sozinho.</li>
+  <li>Crie um <strong>prompt de revisão pós-erro</strong>: cole a questão que errou e obtenha análise profunda.</li>
+</ul>
+
+<div class="prompt-block">
+  <div class="prompt-label">↳ Prompt — Revisão Pós-Erro (o mais poderoso do curso)</div>
+  <div class="prompt-box" id="erro">Errei essa questão. Preciso entender profundamente o motivo.
+
+Questão: <span class="var-tag">[ENUNCIADO COMPLETO]</span>
+Alternativas: <span class="var-tag">[A, B, C, D, E]</span>
+Gabarito oficial: <span class="var-tag">[LETRA CORRETA]</span>
+Minha resposta: <span class="var-tag">[LETRA QUE MARQUEI]</span>
+
+Faça:
+(1) Explique por que minha alternativa está errada
+(2) Explique a lógica e o fundamento do gabarito correto
+(3) Identifique qual conceito específico eu ainda não domino
+(4) Me dê 3 perguntas para testar se entendi agora
+(5) Sugira o que revisar antes de tentar questões parecidas<button class="copy-btn" onclick="copyById('erro', this)">copiar</button></div>
+</div>
+
+<div class="prompt-block">
+  <div class="prompt-label">↳ Prompt — Modo Socrático (sem respostas prontas)</div>
+  <div class="prompt-box" id="socratico">Vamos estudar <span class="var-tag">[TÓPICO]</span> usando o método socrático.
+Regras: não me dê respostas diretas. Faça apenas perguntas que me guiem ao entendimento.
+Comece com uma pergunta ampla e vá afunilando conforme eu respondo.
+Se eu errar, faça uma nova pergunta que me ajude a perceber o erro por conta própria.
+Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class="copy-btn" onclick="copyById('socratico', this)">copiar</button></div>
+</div>
+    `
+      }
+    ];
+
+    const allPrompts = [
+      { category: 'diagnostico', title: 'Diagnóstico de Lacunas por Edital', desc: 'Cole o edital e descubra onde focar energia primeiro.', text: 'Analise o edital a seguir e extraia todas as matérias com seus subtópicos. Para cada item, me faça uma pergunta rápida de sondagem para que eu possa autoavaliar meu nível (0-10). Ao final, apresente um mapa de lacunas priorizando pelo que tem mais peso ou relevância histórica na banca [BANCA].\n\nEdital: [COLE O EDITAL AQUI]' },
+      { category: 'diagnostico', title: 'Diagnóstico Rápido por Matéria', desc: 'Avaliação progressiva em 5 questões por assunto.', text: 'Faça um diagnóstico rápido da minha compreensão sobre [MATÉRIA] para o cargo [CARGO] da banca [BANCA].\nElabore 5 questões progressivas (do básico ao avançado).\nApós eu responder cada uma, avalie e me diga em qual nível estou e quais subáreas priorizar.' },
+      { category: 'flashcard', title: 'Flashcards Cebraspe — Certo/Errado', desc: 'Afirmações no padrão exato da banca com pegadinhas.', text: 'Crie 15 flashcards sobre [TÓPICO] no padrão Cebraspe (afirmações para julgar Certo/Errado).\nFrente: afirmação com possível pegadinha.\nVerso: gabarito (C/E) + explicação em 2 linhas + base legal se aplicável.\nVarie entre afirmações corretas e incorretas de forma aleatória.\nFoque nas pegadinhas que a Cebraspe costuma usar nesse assunto.' },
+      { category: 'flashcard', title: 'Flashcards Conceituais — FCC/Vunesp/FGV', desc: 'Conceito + aplicação prática por banca.', text: 'Crie 10 flashcards conceituais sobre [TÓPICO] para concursos da banca [FCC/Vunesp/FGV].\nFrente: pergunta direta sobre conceito ou aplicação.\nVerso: resposta completa em até 3 linhas, com exemplo prático.\nFoque em definições e distinções que essa banca costuma cobrar.' },
+      { category: 'simulado', title: 'Simulado Temático com Gabarito Comentado', desc: 'Questões inéditas + feedback questão por questão.', text: 'Elabore um simulado com 10 questões inéditas sobre [TÓPICO] no estilo da banca [BANCA], com 5 alternativas cada.\nApós apresentar todas as questões, aguarde meu gabarito.\nQuando eu responder, corrija questão por questão com:\n— alternativa correta e por quê\n— por que cada alternativa errada está errada\n— dica de memorização' },
+      { category: 'simulado', title: 'Simulado Adaptativo por Desempenho', desc: 'IA ajusta a dificuldade conforme você acerta ou erra.', text: 'Vamos fazer um simulado adaptativo sobre [MATÉRIA].\nRegras:\n— Comece com uma questão de dificuldade média\n— Se eu acertar, aumente a dificuldade\n— Se eu errar, diminua e explique o conceito antes de continuar\n— Continue por 10 rodadas\nAo final, me dê um relatório: % de acerto, pontos fortes, pontos fracos e próximos tópicos a revisar.' },
+      { category: 'resumo', title: 'Resumo Esquemático para Prova', desc: 'Estrutura visual com alertas e dicas da banca.', text: 'Crie um resumo esquemático de [TÓPICO] para estudo de concurso.\nFormato:\n— Título → subtópicos em bullets com hierarquia clara\n— Box "ATENÇÃO": pegadinhas comuns\n— Box "DICA DE PROVA": o que mais cai na banca [BANCA]\nUse negrito para termos técnicos e base legal.' },
+      { category: 'resumo', title: 'Lei Seca em Narrativa Memorável', desc: 'Transforma texto legal árido em história fácil de lembrar.', text: 'Transforme o conteúdo de [LEI/ARTIGO/TÓPICO] em uma narrativa fluida e fácil de memorizar.\nUse analogias, exemplos do cotidiano e conecte os conceitos como uma história.\nAo final, extraia os 5 pontos que eu absolutamente não posso esquecer para a prova.' },
+      { category: 'cronograma', title: 'Plano de Estudos Semanal Completo', desc: 'Cronograma otimizado com revisões até a data da prova.', text: 'Tenho [X semanas] até a prova do [CARGO] pela banca [BANCA].\nDisponho de [X horas/dia] em dias úteis e [X horas] no fim de semana.\nMatérias e meu nível (0-10): [LISTA]\n\nMonte um cronograma semanal detalhado com:\n— Matéria e tópico do dia\n— Técnica de estudo recomendada\n— Previsão de revisão espaçada\n— Dias de simulado e revisão de erros' },
+      { category: 'cronograma', title: 'Atualização Semanal do Ciclo', desc: 'Ajusta o plano automaticamente com base no progresso real.', text: 'Esta semana estudei: [O QUE ESTUDOU].\nCumpri [X%] do planejado.\nMinhas maiores dificuldades foram: [DIFICULDADES].\nAcertei [X%] nas questões que fiz.\nA prova é em [X SEMANAS].\n\nCom base nisso:\n1. Ajuste meu ciclo para a próxima semana\n2. Redistribua prioridades por peso × lacuna\n3. Adicione reforço nas áreas críticas\n4. Programe as revisões espaçadas necessárias' },
+      { category: 'revisao', title: 'Revisão Espaçada — Curva de Ebbinghaus', desc: 'Roteiro de revisão por 21 dias com conteúdo pronto.', text: 'Crie um roteiro de revisão espaçada para [TÓPICO], que estudei hoje.\nBaseie-se na curva do esquecimento de Ebbinghaus:\n— Dia 1 (hoje): resumo completo do tópico\n— Dia 2: 10 perguntas-relâmpago\n— Dia 7: mini simulado de 5 questões\n— Dia 21: revisão crítica focada nos meus erros anteriores\n\nForneca o conteúdo de cada sessão já estruturado.' },
+      { category: 'revisao', title: 'Revisão Pré-Prova — 48h antes', desc: 'Foco máximo no que mais cai — sem enroscar em detalhes.', text: 'Faltam 48h para minha prova de [CARGO/BANCA].\nMatérias do edital: [LISTA].\n\nCrie um roteiro de revisão de última hora:\n— Primeiras 24h: o que revisar (maior probabilidade de cair)\n— Últimas 12h: conceitos rápidos e pegadinhas\n— O que NÃO revisar para não confundir\n— Uma técnica de memorização de emergência para os pontos críticos' },
+    ];
+
+    const cicloData = [
+      { icon: '🔍', color: 'rgba(233,69,96,0.15)', title: 'D — Diagnóstico', desc: 'Mapeie suas lacunas antes de estudar qualquer coisa. Analise o edital com IA, autoavalie seu nível por matéria e descubra onde focar energia primeiro.', prompt: 'Me ajude a fazer um diagnóstico de lacunas para o edital do cargo [CARGO] da banca [BANCA]. Quero identificar minhas prioridades de estudo.' },
+      { icon: '📅', color: 'rgba(245,166,35,0.15)', title: 'P — Planejamento', desc: 'Monte um cronograma realista com a IA. Ciclo semanal otimizado, revisões espaçadas e simulados programados por semana até a data da prova.', prompt: 'Me ajude a montar um plano de estudos semanal para concurso usando a técnica de revisão espaçada de Ebbinghaus.' },
+      { icon: '📚', color: 'rgba(0,210,160,0.15)', title: 'E — Execução Ativa', desc: 'Estude com técnicas ativas: Feynman reverso com IA, flashcards gerados on-demand por banca, NotebookLM para fontes primárias do edital.', prompt: 'Quero aplicar estudo ativo com IA em [MATÉRIA]. Me sugira a melhor técnica para esse tipo de conteúdo.' },
+      { icon: '📊', color: 'rgba(87,108,254,0.15)', title: 'A — Avaliação', desc: 'Simule sob pressão de tempo, analise cada erro com o prompt de revisão pós-erro e mapeie padrões de dificuldade para corrigir a rota.', prompt: 'Preciso fazer uma análise de desempenho nos meus simulados de [MATÉRIA]. Me ajude a identificar padrões de erro.' },
+      { icon: '🔁', color: 'rgba(233,69,96,0.1)', title: 'R — Revisão & Ajuste', desc: 'Toda semana: atualize o ciclo com IA, reforce fraquezas identificadas, comemore avanços mensuráveis e ajuste o plano para a semana seguinte.', prompt: 'Preciso ajustar meu ciclo de estudos com base no progresso desta semana. Me faça as perguntas certas para atualizar meu plano.' },
+    ];
+
+    const checklistItems = [
+      'Rodei o diagnóstico semanal de lacunas com IA',
+      'Usei NotebookLM em pelo menos uma matéria',
+      'Fiz estudo ativo (Feynman ou flashcards) todos os dias úteis',
+      'Completei ao menos 1 simulado ou banco de questões',
+      'Revisei os erros do simulado com o prompt pós-erro',
+      'Atualizei meu cronograma com base no progresso real',
+      'Ouvi o Audio Overview do NotebookLM (revisão passiva)',
+    ];
+
+    // =================== STATE ===================
+    let doneChecks = new Set();
+    let currentFilter = 'all';
+
+    // =================== RENDER ===================
+
+    function renderModules() {
+      const grid = document.getElementById('modules-grid');
+      grid.innerHTML = modules.map((m, i) => `
+    <div class="module-card" id="mod-${i}" onclick="openModule(${i})">
+      <div class="module-num">MOD 0${i + 1}</div>
+      <div class="module-title">${m.title.replace('02 · NotebookLM para Concursos', '02 · NotebookLM para Concursos <span class="tag-new">mai/26</span>')}</div>
+      <div class="module-desc">${m.desc}</div>
+      <div class="module-pills">${m.pills.map(p => `<span class="pill">${p}</span>`).join('')}</div>
+    </div>
+  `).join('');
+    }
+
+    function openModule(idx) {
+      document.querySelectorAll('.module-card').forEach((c, i) => c.classList.toggle('active-card', i === idx));
+      const panel = document.getElementById('content-panel');
+      panel.style.display = 'block';
+      document.getElementById('panel-title').textContent = modules[idx].title;
+      document.getElementById('panel-body').innerHTML = modules[idx].content;
+      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+    }
+
+    function closeModule() {
+      document.getElementById('content-panel').style.display = 'none';
+      document.querySelectorAll('.module-card').forEach(c => c.classList.remove('active-card'));
+    }
+
+    function renderPrompts(cat) {
+      currentFilter = cat;
+      const btns = document.getElementById('filter-btns');
+      const categories = ['all', 'diagnostico', 'flashcard', 'simulado', 'resumo', 'cronograma', 'revisao'];
+      const labels = { all: 'Todos', diagnostico: 'Diagnóstico', flashcard: 'Flashcard', simulado: 'Simulado', resumo: 'Resumo', cronograma: 'Cronograma', revisao: 'Revisão' };
+      btns.innerHTML = categories.map(c => `<button class="filter-btn ${c === cat ? 'active' : ''}" onclick="renderPrompts('${c}')">${labels[c]}</button>`).join('');
+
+      const filtered = cat === 'all' ? allPrompts : allPrompts.filter(p => p.category === cat);
+      const list = document.getElementById('prompts-list');
+      list.innerHTML = filtered.map((p, i) => {
+        const pid = 'plib-' + i;
+        const escaped = p.text.replace(/\[([^\]]+)\]/g, '<span class="var-tag">[$1]</span>').replace(/\n/g, '\n');
+        return `
+    <div class="accordion" id="acc-${i}">
+      <div class="accordion-header" onclick="toggleAcc(${i})">
+        <div class="accordion-title"><span class="acc-cat">${p.category}</span>${p.title}</div>
+        <span class="acc-arrow">▶</span>
+      </div>
+      <div class="accordion-body">
+        <p class="acc-desc">${p.desc}</p>
+        <div class="prompt-box" id="${pid}">${escaped}<button class="copy-btn" onclick="copyById('${pid}', this, event)">copiar</button></div>
+      </div>
+    </div>`;
+      }).join('');
+    }
+
+    function toggleAcc(i) {
+      document.getElementById('acc-' + i).classList.toggle('open');
+    }
+
+    function renderCiclo() {
+      document.getElementById('ciclo-steps').innerHTML = cicloData.map((s, i) => `
+    <div class="ciclo-step">
+      <div class="ciclo-icon" style="background:${s.color}">${s.icon}</div>
+      <div class="ciclo-content">
+        <h4>${s.title}</h4>
+        <p>${s.desc}</p>
+      </div>
+    </div>
+  `).join('');
+
+      renderChecklist();
+    }
+
+    function renderChecklist() {
+      document.getElementById('checklist').innerHTML = checklistItems.map((item, i) => `
+    <div class="check-item ${doneChecks.has(i) ? 'done' : ''}" onclick="toggleCheck(${i}, this)">
+      <div class="check-circle">${doneChecks.has(i) ? '✓' : ''}</div>
+      <span>${item}</span>
+    </div>
+  `).join('');
+    }
+
+    function toggleCheck(i, el) {
+      if (doneChecks.has(i)) { doneChecks.delete(i); } else { doneChecks.add(i); }
+      el.classList.toggle('done', doneChecks.has(i));
+      el.querySelector('.check-circle').textContent = doneChecks.has(i) ? '✓' : '';
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const pct = Math.round((doneChecks.size / checklistItems.length) * 100);
+      document.getElementById('global-bar').style.width = pct + '%';
+    }
+
+    // =================== NAV ===================
+
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      ['home', 'prompts', 'ciclo'].forEach(n => {
+        const tabs = document.querySelectorAll('.nav-tab');
+        tabs.forEach(t => {
+          if (t.getAttribute('onclick') && t.getAttribute('onclick').includes("'" + name + "'")) {
+            t.classList.add('active');
+          } else {
+            t.classList.remove('active');
+          }
+        });
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (name === 'prompts') renderPrompts(currentFilter);
+      if (name === 'ciclo') renderCiclo();
+    }
+
+    // =================== COPY ===================
+
+    function copyById(id, btn, e) {
+      if (e) e.stopPropagation();
+      const box = document.getElementById(id);
+      const clone = box.cloneNode(true);
+      clone.querySelectorAll('button').forEach(b => b.remove());
+      const text = clone.innerText.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'copiado! ✓';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'copiar'; btn.classList.remove('copied'); }, 2000);
+      }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        btn.textContent = 'copiado! ✓';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'copiar'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    // =================== INIT ===================
+    renderModules();
+    renderPrompts('all');
+  </script>
+
+  <!-- ===== TELA DE SENHA ===== -->
+  <style>
+    #gate {
+      position: fixed;
+      inset: 0;
+      background: #0d0d1a;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    #gate.hidden {
+      display: none;
+    }
+
+    .gate-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(233, 69, 96, 0.10) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .gate-box {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .gate-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font);
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+
+    .gate-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+    }
+
+    .gate-logo span {
+      color: var(--accent);
+    }
+
+    .gate-title {
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text2);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .gate-input-wrap {
+      width: 100%;
+      position: relative;
+    }
+
+    .gate-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 0.9rem 3rem 0.9rem 1.1rem;
+      font-family: var(--mono);
+      font-size: 1rem;
+      color: var(--text);
+      outline: none;
+      transition: border 0.2s;
+      letter-spacing: 2px;
+    }
+
+    .gate-input::placeholder {
+      letter-spacing: 0;
+      color: var(--text2);
+      font-family: var(--font);
+      font-size: 0.9rem;
+    }
+
+    .gate-input:focus {
+      border-color: rgba(233, 69, 96, 0.5);
+    }
+
+    .gate-eye {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text2);
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .gate-eye:hover {
+      color: var(--text);
+    }
+
+    .gate-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, var(--accent), #c73652);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      letter-spacing: 0.3px;
+    }
+
+    .gate-btn:hover {
+      opacity: 0.9;
+    }
+
+    .gate-btn:active {
+      transform: scale(0.98);
+    }
+
+    .gate-error {
+      font-family: var(--font);
+      font-size: 0.82rem;
+      color: var(--accent);
+      text-align: center;
+      min-height: 1.2em;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .gate-error.visible {
+      opacity: 1;
+    }
+
+    .gate-hint {
+      font-family: var(--font);
+      font-size: 0.78rem;
+      color: var(--text2);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .gate-hint a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+
+  <div id="gate">
+    <div class="gate-glow"></div>
+    <div class="gate-box">
+      <div class="gate-logo">
+        <div class="gate-logo-icon">⚡</div>
+        Prompt<span>Aprovado</span>
+      </div>
+
+      <div class="gate-title">
+        Digite sua senha de acesso<br>para continuar
+      </div>
+
+      <div class="gate-input-wrap">
+        <input class="gate-input" id="gate-input" type="password" placeholder="sua senha de acesso" autocomplete="off"
+          onkeydown="if(event.key==='Enter') gateSubmit()" />
+        <button class="gate-eye" onclick="gateToggleEye()" title="mostrar/ocultar">👁</button>
+      </div>
+
+      <button class="gate-btn" onclick="gateSubmit()">Acessar →</button>
+
+      <div class="gate-error" id="gate-error">Senha incorreta. Tente novamente.</div>
+
+      <div class="gate-hint">
+        Recebeu sua senha por email após a compra.<br>
+        Dúvidas? <a href="mailto:seu@email.com">seu@email.com</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =================== PORTA DE ACESSO ===================
+    // Altere a senha abaixo:
+    const SENHA_ACESSO = 'PROMPTAPROVADO2026';
+
+    // Mantém acesso por 7 dias após login
+    const CHAVE = 'pa_auth';
+    const VALIDADE_DIAS = 7;
+
+    (function () {
+      try {
+        const salvo = localStorage.getItem(CHAVE);
+        if (salvo) {
+          const { exp } = JSON.parse(salvo);
+          if (Date.now() < exp) {
+            document.getElementById('gate').classList.add('hidden');
+          }
+        }
+      } catch (e) { }
+    })();
+
+    function gateSubmit() {
+      const val = document.getElementById('gate-input').value.trim();
+      const err = document.getElementById('gate-error');
+      if (val === SENHA_ACESSO) {
+        const exp = Date.now() + VALIDADE_DIAS * 24 * 60 * 60 * 1000;
+        localStorage.setItem(CHAVE, JSON.stringify({ exp }));
+        const gate = document.getElementById('gate');
+        gate.style.opacity = '0';
+        gate.style.transition = 'opacity 0.35s ease';
+        setTimeout(() => gate.classList.add('hidden'), 350);
+      } else {
+        err.classList.add('visible');
+        document.getElementById('gate-input').style.borderColor = 'rgba(233,69,96,0.6)';
+        setTimeout(() => {
+          err.classList.remove('visible');
+          document.getElementById('gate-input').style.borderColor = '';
+        }, 2500);
+      }
+    }
+
+    function gateToggleEye() {
+      const inp = document.getElementById('gate-input');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+  </script>
+</body>
+
+</html>
