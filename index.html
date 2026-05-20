@@ -1802,7 +1802,7 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
   <script>
     // =================== PORTA DE ACESSO ===================
     // Altere a senha abaixo:
-    const SENHA_ACESSO = 'PROMPTAPROVADO2026';
+    const SENHA_ACESSO = 'APROVADO';
 
     // Mantém acesso por 7 dias após login
     const CHAVE = 'pa_auth';
@@ -1823,7 +1823,7 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
     function gateSubmit() {
       const val = document.getElementById('gate-input').value.trim();
       const err = document.getElementById('gate-error');
-      if (val === SENHA_ACESSO) {
+      if (val.toUpperCase() === SENHA_ACESSO) {
         const exp = Date.now() + VALIDADE_DIAS * 24 * 60 * 60 * 1000;
         localStorage.setItem(CHAVE, JSON.stringify({ exp }));
         const gate = document.getElementById('gate');
