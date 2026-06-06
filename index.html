@@ -191,7 +191,7 @@
       z-index: 0;
     }
 
-    .hero>* {
+    .hero > *:not(.hero-glow) {
       position: relative;
       z-index: 1;
     }
@@ -1304,7 +1304,7 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
       {
         title: '06 · Estudo por Momento — O Sistema 3 Níveis',
         desc: 'A peça que faltava: o que pedir à IA dependendo de quanto você já domina cada assunto.',
-        pills: ['nível 1: zero', 'nível 2: parcial', 'nível 3: domínio', 'banca · cargo'],
+        pills: ['nível 1: não conheço o assunto', 'nível 2: Já estudei, mas não domino', 'nível 3: já domino, preciso revisar / explorar a fundo banca e cargo'],
         content: `
 <p class="lesson-text">Informação e IA deixaram de ser a lacuna — hoje sobra material. A lacuna real é <strong>saber o que fazer com a IA em cada momento do seu estudo</strong>. Pedir um simulado quando você ainda não entendeu o conceito é desperdício. Pedir explicação básica de algo que você já domina é desperdício. Este módulo organiza tudo em <strong>3 níveis de domínio</strong> — e cada nível tem prompts próprios.</p>
 
@@ -1313,9 +1313,9 @@ Continue por <span class="var-tag">[X]</span> rodadas de perguntas.<button class
 <p class="lesson-text"><strong>Como descobrir seu nível em cada assunto (faça primeiro):</strong> use o prompt de diagnóstico do Módulo 04 ou o Diagnóstico Rápido da Biblioteca. Em 5 perguntas a IA te diz onde você está. Só então escolha a família de prompt abaixo.</p>
 
 <div class="feature-grid">
-  <div class="feature-card"><span class="feature-icon">🌱</span><div class="feature-name">Nível 1 — Não sei nada</div><div class="feature-desc">Objetivo: entender do zero, com linguagem simples e analogias. Ainda NÃO faça questões.</div></div>
-  <div class="feature-card"><span class="feature-icon">🌗</span><div class="feature-name">Nível 2 — Sei pela metade</div><div class="feature-desc">Objetivo: achar exatamente o que falta, corrigir imprecisões e conectar os pontos soltos.</div></div>
-  <div class="feature-card"><span class="feature-icon">🌳</span><div class="feature-name">Nível 3 — Já domino</div><div class="feature-desc">Objetivo: manter afiado com questões no estilo da banca, pegadinhas e revisão espaçada.</div></div>
+  <div class="feature-card"><div class="feature-name">Nível 1 — Não sei nada</div><div class="feature-desc">Objetivo: entender do zero, com linguagem simples e analogias. Ainda NÃO faça questões.</div></div>
+  <div class="feature-card"><div class="feature-name">Nível 2 — Sei pela metade</div><div class="feature-desc">Objetivo: achar exatamente o que falta, corrigir imprecisões e conectar os pontos soltos.</div></div>
+  <div class="feature-card"><div class="feature-name">Nível 3 — Já domino</div><div class="feature-desc">Objetivo: manter afiado com questões no estilo da banca, pegadinhas e revisão espaçada.</div></div>
 </div>
 
 <div class="tip-box">⚡ Direcionamento por banca e cargo: <strong>todos os prompts deste módulo pedem [BANCA], [CARGO] e o histórico de incidência.</strong> Quanto mais você alimenta a IA com o que caiu nos últimos concursos do órgão (e de órgãos parecidos, mesma banca/mesmo cargo), mais cirúrgico fica o estudo. O prompt de "Radar de Incidência" abaixo monta esse mapa pra você.</div>
@@ -1395,7 +1395,7 @@ Se você não tiver dados específicos do órgão, diga isso claramente e trabal
       { category: 'nivel3', title: 'Nível 3 — Manutenção + Questões da Banca', desc: 'Você já domina. Mantenha afiado e blinde contra pegadinhas.', text: 'Já domino [ASSUNTO] para o cargo de [CARGO] da banca [BANCA]. Quero manter afiado e blindar contra pegadinhas.\n\nFaça:\n1. 8 questões no estilo exato da banca [BANCA], priorizando os recortes que mais caem nesse assunto\n2. Inclua pelo menos 3 pegadinhas clássicas que essa banca usa aqui\n3. Após meu gabarito, corrija questão por questão e aponte só os pontos finos que eu ainda escorrego\n4. Monte um plano de revisão espaçada (7, 21 e 45 dias) para eu não perder esse domínio' },
       { category: 'nivel3', title: 'Nível 3 — Simulado Cronometrado de Elite', desc: 'Treino de alto nível com gestão de tempo e questões difíceis.', text: 'Domino [ASSUNTO] para [CARGO]/[BANCA] e quero treino de alto nível.\nMonte um simulado de 10 questões DIFÍCEIS no estilo da banca [BANCA], misturando os subtópicos mais cobrados.\nDefina um tempo-alvo por questão e me cobre disso.\nApós a correção, foque só nos erros: para cada um, diga se foi falha de conceito, de atenção ou de interpretação — e o que treinar para não repetir.' },
       { category: 'incidencia', title: 'Radar de Incidência por Órgão e Banca', desc: 'Prioriza o estudo pelo que mais caiu no órgão-alvo e em órgãos semelhantes.', text: 'Quero priorizar meu estudo de [ASSUNTO/MATÉRIA] pelo que realmente cai.\n\nCargo: [CARGO]\nBanca: [BANCA]\nÓrgão-alvo: [ÓRGÃO]\nÓrgãos semelhantes (mesma banca/cargo, provas parecidas): [LISTE SE HOUVER]\n\nCom base nos últimos concursos desse órgão e dos órgãos semelhantes:\n1. Liste os subtópicos que mais aparecem, do mais cobrado ao menos\n2. Indique o nível de profundidade que a banca costuma exigir em cada um (superficial / médio / profundo)\n3. Sinalize armadilhas recorrentes dessa banca nesse assunto\n4. Sugira por onde começar dado tempo curto: o que dá mais retorno por hora estudada\nSe não tiver dados específicos do órgão, diga isso claramente e trabalhe com o padrão histórico da banca [BANCA].' },
-      { category: 'incidencia', title: 'Plano de Ataque por Nível × Incidência', desc: 'Cruza seu nível em cada assunto com o quanto ele cai. O cérebro do sistema.', text: 'Quero um plano de ataque para [CARGO]/[BANCA], órgão [ÓRGÃO].\n\nLista de assuntos com meu nível atual (1=não sei nada, 2=sei pela metade, 3=domino):\n[ASSUNTO A]: [NÍVEL]\n[ASSUNTO B]: [NÍVEL]\n(continue)\n\nMonte uma tabela cruzando MEU NÍVEL × INCIDÊNCIA na banca, e classifique cada assunto em:\n— PRIORIDADE MÁXIMA (cai muito + sei pouco)\n— MANUTENÇÃO (cai muito + já domino: só revisão espaçada)\n— OPORTUNISTA (cai pouco + sei pouco: estudar só se sobrar tempo)\n— IGNORAR POR ORA (cai pouco + já domino)\nPara cada assunto de prioridade máxima, diga qual prompt usar (base do zero, fechar lacunas ou questões).' },
+      { category: 'incidencia', title: 'Plano de Ataque por Nível × Incidência', desc: 'Cruza seu nível em cada assunto com o quanto ele cai. O cérebro do sistema.', text: 'Quero um plano de ataque para [CARGO]/[BANCA], órgão [ÓRGÃO].\n\nLista de assuntos com meu nível atual (1=não sei nada, 2=sei parcialmente, 3=domino):\n[ASSUNTO A]: [NÍVEL]\n[ASSUNTO B]: [NÍVEL]\n(continue)\n\nMonte uma tabela cruzando MEU NÍVEL × INCIDÊNCIA na banca, e classifique cada assunto em:\n— PRIORIDADE MÁXIMA (cai muito + sei pouco)\n— MANUTENÇÃO (cai muito + já domino: só revisão espaçada)\n— OPORTUNISTA (cai pouco + sei pouco: estudar só se sobrar tempo)\n— IGNORAR POR ORA (cai pouco + já domino)\nPara cada assunto de prioridade máxima, diga qual prompt usar (base do zero, fechar lacunas ou questões).' },
     ];
 
 
@@ -1432,8 +1432,8 @@ Se você não tiver dados específicos do órgão, diga isso claramente e trabal
     function renderPrompts(cat) {
       currentFilter = cat;
       const btns = document.getElementById('filter-btns');
-      const categories = ['all', 'nivel1', 'nivel2', 'nivel3', 'incidencia', 'diagnostico', 'flashcard', 'simulado', 'resumo', 'cronograma', 'revisao'];
-      const labels = { all: 'Todos', nivel1: '🌱 Nível 1 · Não sei', nivel2: '🌗 Nível 2 · Sei pela metade', nivel3: '🌳 Nível 3 · Domino', incidencia: '🎯 Incidência', diagnostico: 'Diagnóstico', flashcard: 'Flashcard', simulado: 'Simulado', resumo: 'Resumo', cronograma: 'Cronograma', revisao: 'Revisão' };
+      const categories = ['all', 'incidencia', 'diagnostico', 'flashcard', 'simulado', 'resumo', 'cronograma', 'revisao', 'nivel1', 'nivel2', 'nivel3'];
+      const labels = { all: 'Todos', incidencia: 'Incidência', diagnostico: 'Diagnóstico', flashcard: 'Flashcard', simulado: 'Simulado', resumo: 'Resumo', cronograma: 'Cronograma', revisao: 'Revisão', nivel1: 'Nível 1 · Não conheço o assunto', nivel2: 'Nível 2 · Sei parcialmente o assunto', nivel3: 'Nível 3 · Domino, preciso revisar' };
       btns.innerHTML = categories.map(c => `<button class="filter-btn ${c === cat ? 'active' : ''}" onclick="renderPrompts('${c}')">${labels[c]}</button>`).join('');
 
       const filtered = cat === 'all' ? allPrompts : allPrompts.filter(p => p.category === cat);
